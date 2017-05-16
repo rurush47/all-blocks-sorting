@@ -5,4 +5,4 @@ Box::Box(int number_of_colors)
 
 }
 
-Box::Box(int *blocks) {this->blocks = blocks;}
+Box::Box(int *blocks) {}
