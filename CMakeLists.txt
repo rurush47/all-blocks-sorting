@@ -3,5 +3,5 @@ project(all_blocks_sorting)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp algorithm/Box.cpp algorithm/Box.h algorithm/State.cpp algorithm/State.h algorithm/Algorithm.cpp algorithm/Algorithm.h)
 add_executable(all_blocks_sorting ${SOURCE_FILES})
