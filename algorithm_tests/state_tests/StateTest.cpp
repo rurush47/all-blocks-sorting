@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <vector>
 #include "Box.h"
 #include "State.h"
 using namespace std;
@@ -73,6 +72,6 @@ TEST(StateFixture, generate_hash_test)
     int hash2 = state2.GenerateHash();
     int hash3 = state3.GenerateHash();
 
-    ASSERT_EQ(state.GenerateHash(), state2.GenerateHash());
-    ASSERT_NE(state.GenerateHash(), state3.GenerateHash());
+    ASSERT_EQ(hash1, hash2);
+    ASSERT_NE(hash1, hash3);
 }
