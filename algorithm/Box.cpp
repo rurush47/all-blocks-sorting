@@ -9,3 +9,39 @@ Box::Box(vector<int> &blocks, int capacity)
 vector<int> Box::GetBlocks() { return blocks; }
 
 int Box::GetCapacity() { return capacity; }
+
+bool Box::AddBlock(int color)
+{
+    try
+    {
+        if(number_of_blocks < capacity)
+        {
+            blocks.at(color)++;
+            number_of_blocks++;
+            return true;
+        }
+    }
+    catch (const out_of_range& oor)
+    {
+        throw oor;
+    }
+    return false;
+}
+
+bool Box::RemoveBlock(int color)
+{
+    try
+    {
+        if(blocks.at(color) > 0)
+        {
+            blocks.at(color)--;
+            number_of_blocks--;
+            return true;
+        }
+    }
+    catch (const out_of_range& oor)
+    {
+        throw oor;
+    }
+    return false;
+}
