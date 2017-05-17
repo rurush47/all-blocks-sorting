@@ -1,8 +1,11 @@
 #include "Box.h"
 
-Box::Box(int number_of_colors)
+Box::Box(vector<int> &blocks, int capacity)
 {
-
+    Box::blocks = blocks;
+    Box::capacity = capacity;
 }
 
-Box::Box(int *blocks) {}
+vector<int> Box::GetBlocks() { return blocks; }
+
+int Box::GetCapacity() { return capacity; }

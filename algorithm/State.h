@@ -9,13 +9,15 @@ using namespace std;
 class State
 {
     int number_of_boxes;
-    //vector<Box> boxes;
+    vector<Box> boxes;
 
 public:
-    State(int number_of_boxes, vector<Box> boxes);
-    string GenerateHash();
+    State(int number_of_boxes, vector<Box>& boxes);
+    int GenerateHash();
     bool IsFinal();
-    //vector<State> GenerateNextStates(vector<string> state_history);
+    vector<State>* GenerateNextStates(vector<string> *state_history);
+    vector<Box> GetBoxes();
+    int GetNumberOfBoxes();
     //TODO heuristic evaluation
 };
 

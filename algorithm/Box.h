@@ -1,13 +1,17 @@
 #ifndef ALL_BLOCKS_SORTING_BOX_H
 #define ALL_BLOCKS_SORTING_BOX_H
 
+#include <vector>
+using namespace std;
 
-class Box {
-    int blocks[];
-
+class Box
+{
+    vector<int> blocks;
+    int capacity;
 public:
-    Box(int number_of_colors);
-    Box(int blocks[]);
+    Box(vector<int> &blocks, int capacity);
+    vector<int> GetBlocks();
+    int GetCapacity();
 };
 
 

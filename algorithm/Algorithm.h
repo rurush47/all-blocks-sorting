@@ -4,7 +4,8 @@
 
 class Algorithm
 {
-    int number_of_colors;
+public:
+    static int number_of_colors;
 };
 
 

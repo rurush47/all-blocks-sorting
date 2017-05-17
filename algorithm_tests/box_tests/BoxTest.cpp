@@ -1,19 +1,16 @@
 #include "gtest/gtest.h"
 #include "Box.h"
+using namespace std;
 
 class BoxFixture : public ::testing::Test
 {
 
 };
 
-TEST(BoxFixture, test1)
+TEST(BoxFixture, constructor_test)
 {
-    Box* box = new Box(5);
-    delete(box);
-    EXPECT_EQ(1, 1);
-}
-
-TEST(BoxFixture, test2)
-{
-    EXPECT_EQ(1, 0);
+    vector<int> array = {1, 0, 2};
+    Box box(array, 3);
+    EXPECT_EQ(box.GetBlocks(), array);
+    EXPECT_EQ(box.GetCapacity(), 3);
 }
