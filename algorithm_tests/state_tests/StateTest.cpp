@@ -2,6 +2,7 @@
 #include <vector>
 #include "Box.h"
 #include "State.h"
+using namespace std;
 
 class StateFixture: public ::testing::Test
 {
@@ -10,10 +11,10 @@ class StateFixture: public ::testing::Test
 
 TEST(StateFixture, constructor_test)
 {
-    int array1[] = {1, 2, 1};
-    int array2[] = {1, 2, 1};
-    int array3[] = {1, 2, 1};
-    int array4[] = {1, 2, 1};
+    vector<int> array1 = {1, 2, 1};
+    vector<int> array2 = {1, 2, 1};
+    vector<int> array3 = {1, 2, 1};
+    vector<int> array4 = {1, 2, 1};
 
     Box box1(array1, 3);
     Box box2(array2, 3);
@@ -36,12 +37,12 @@ TEST(StateFixture, constructor_test)
 
 TEST(StateFixture, generate_hash_test)
 {
-    int array1[] = {1, 2, 1};
-    int array2[] = {1, 2, 3};
-    int array3[] = {1, 2, 6};
-    int array4[] = {1, 2, 7};
-    int array5[] = {1, 2, 1};
-    int array6[] = {1, 2, 3};
+    vector<int> array1 = {1, 2, 1};
+    vector<int> array2 = {1, 2, 3};
+    vector<int> array3 = {1, 2, 6};
+    vector<int> array4 = {1, 2, 7};
+    vector<int> array5 = {1, 2, 1};
+    vector<int> array6 = {1, 2, 3};
 
     Box box1(array1, 3);
     Box box2(array2, 3);
@@ -68,6 +69,10 @@ TEST(StateFixture, generate_hash_test)
 
     state.GenerateHash();
 
-    ASSERT_EQ(state.GenerateHash(), state3.GenerateHash());
-    ASSERT_NE(state.GenerateHash(), state2.GenerateHash());
+    int hash1 = state.GenerateHash();
+    int hash2 = state2.GenerateHash();
+    int hash3 = state3.GenerateHash();
+
+    ASSERT_EQ(state.GenerateHash(), state2.GenerateHash());
+    ASSERT_NE(state.GenerateHash(), state3.GenerateHash());
 }

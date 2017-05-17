@@ -12,15 +12,16 @@ int State::GetNumberOfBoxes() { return number_of_boxes; }
 
 int State::GenerateHash()
 {
-    int result = 9999;
-//    for (int i = 0; i < boxes.size(); ++i)
-//    {
-//        int* crt_box_array = boxes[i].GetBlocks();
-//        int size = (sizeof(crt_box_array)/sizeof(*crt_box_array));
-//        for (int j = 0; j < size; j++)
-//        {
-//            result ^= crt_box_array[j];
-//        }
-//    }
+    int result = 0;
+    int shift = 0;
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        vector<int> crt_box_array = boxes[i].GetBlocks();
+        for (int j = 0; j < crt_box_array.size(); j++)
+        {
+            shift = (shift + 11) % 21;
+            result ^= (crt_box_array[j] + 1024) << shift;
+        }
+    }
     return result;
 }
