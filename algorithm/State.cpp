@@ -25,3 +25,30 @@ int State::GenerateHash()
     }
     return result;
 }
+
+State State::MoveLeft(int box_index, int color_index)
+{
+    Box box = boxes[box_index];
+    int next_box_index;
+    box_index == 0 ? next_box_index = number_of_boxes : next_box_index--;
+    State new_state = *this;
+}
+
+State State::MoveRight(int box_index, int color_index)
+{
+
+}
+
+//TODO implement
+vector<State> State::GenerateNextStates(vector<string> &state_history)
+{
+    vector<State> new_states;
+    for (int i = 0; i < number_of_boxes; ++i)
+    {
+        vector<int> crt_blocks = boxes[i].GetBlocks();
+        for (int j = 0; j < crt_blocks.size(); ++j)
+        {
+
+        }
+    }
+}

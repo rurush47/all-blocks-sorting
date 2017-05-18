@@ -18,6 +18,10 @@ public:
     vector<State> GenerateNextStates(vector<string>& state_history);
     vector<Box> GetBoxes();
     int GetNumberOfBoxes();
+
+private:
+    State MoveLeft(int box_index, int color_index);
+    State MoveRight(int box_index, int color_index);
     //TODO heuristic evaluation
 };
 
