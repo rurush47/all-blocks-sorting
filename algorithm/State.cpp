@@ -1,5 +1,7 @@
 #include "State.h"
 
+State::State() {}
+
 State::State(int number_of_boxes, vector<Box>& boxes)
 {
     State::number_of_boxes = number_of_boxes;
@@ -26,21 +28,43 @@ int State::GenerateHash()
     return result;
 }
 
-State State::MoveLeft(int box_index, int color_index)
+pair<bool, State> State::MoveLeft(int box_index, int color_index, State new_state)
 {
-    Box box = boxes[box_index];
-    int next_box_index;
-    box_index == 0 ? next_box_index = number_of_boxes : next_box_index--;
-    State new_state = *this;
+    int next_box_index = box_index;
+    box_index == 0 ? next_box_index = (number_of_boxes-1) : next_box_index--;
+    if(new_state.boxes[box_index].RemoveBlock(color_index) &&
+            new_state.boxes[next_box_index].AddBlock(color_index))
+    {
+        return pair<bool, State>(true, new_state);
+    }
+    return pair<bool, State>(false, State());
 }
 
-State State::MoveRight(int box_index, int color_index)
+pair<bool, State> State::MoveRight(int box_index, int color_index, State new_state)
 {
-
+    int next_box_index = box_index;
+    box_index == (number_of_boxes - 1) ? next_box_index = 0 : next_box_index++;
+    if(new_state.boxes[box_index].RemoveBlock(color_index) &&
+       new_state.boxes[next_box_index].AddBlock(color_index))
+    {
+        return pair<bool, State>(true, new_state);
+    }
+    return pair<bool, State>(false, State());
 }
 
-//TODO implement
-vector<State> State::GenerateNextStates(vector<string> &state_history)
+bool State::Contains(vector<int> hash_history, int hash)
+{
+    for(int i = 0; i < hash_history.size(); i++)
+    {
+        if(hash == hash_history[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+vector<State> State::GenerateNextStates(vector<int> &state_history)
 {
     vector<State> new_states;
     for (int i = 0; i < number_of_boxes; ++i)
@@ -48,7 +72,24 @@ vector<State> State::GenerateNextStates(vector<string> &state_history)
         vector<int> crt_blocks = boxes[i].GetBlocks();
         for (int j = 0; j < crt_blocks.size(); ++j)
         {
-
+            if(crt_blocks[j] > 0)
+            {
+                pair<bool, State> move_results[2] = {MoveLeft(i, j, *this), MoveRight(i, j, *this)};
+                for(int i = 0; i < 2; i++)
+                {
+                    if(move_results[i].first)
+                    {
+                        State new_state = move_results[i].second;
+                        int hash = new_state.GenerateHash();
+                        if(!Contains(state_history, hash))
+                        {
+                            state_history.push_back(hash);
+                            new_states.push_back(new_state);
+                        }
+                    }
+                }
+            }
         }
     }
+    return new_states;
 }

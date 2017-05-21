@@ -4,6 +4,7 @@ Box::Box(vector<int> &blocks, int capacity)
 {
     Box::blocks = blocks;
     Box::capacity = capacity;
+    Box::number_of_blocks = 0;
 }
 
 vector<int> Box::GetBlocks() { return blocks; }

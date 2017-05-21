@@ -86,3 +86,108 @@ TEST(StateFixture, generate_hash_test)
     ASSERT_NE(hash1, hash3);
     ASSERT_NE(hash1, hash4);
 }
+
+TEST(StateFixture, contains_test)
+{
+    vector<int> v;
+    v.push_back(12);
+    v.push_back(45);
+    v.push_back(19);
+
+    bool result1 = State::Contains(v, 12);
+    bool result2 = State::Contains(v, 23);
+
+    ASSERT_EQ(result1, true);
+    ASSERT_EQ(result2, false);
+}
+
+TEST(StateFixture, move_left_test) {
+    vector<int> vector1 = {0, 0, 0};
+    vector<int> vector2 = {1, 0, 0};
+
+    Box box1(vector1, 3);
+    Box box2(vector2, 3);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    State state(2, box_list);
+
+    pair<bool, State> new_state = state.MoveLeft(1, 0, state);
+    ASSERT_EQ(new_state.first, true);
+    ASSERT_EQ(new_state.second.GetBoxes()[0].GetBlocks()[0], 1);
+    ASSERT_EQ(new_state.second.GetBoxes()[0].GetBlocks()[1], 0);
+}
+
+TEST(StateFixture, move_right_test) {
+    vector<int> vector1 = {0, 0, 0};
+    vector<int> vector2 = {0, 0, 1};
+
+    Box box1(vector1, 3);
+    Box box2(vector2, 3);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    State state(2, box_list);
+
+    pair<bool, State> new_state = state.MoveRight(1, 2, state);
+    ASSERT_EQ(new_state.first, true);
+    ASSERT_EQ(new_state.second.GetBoxes()[0].GetBlocks()[2], 1);
+    ASSERT_EQ(new_state.second.GetBoxes()[1].GetBlocks()[2], 0);
+}
+
+TEST(StateFixture, generate_states_test)
+{
+    vector<int> vector1 = {2, 1, 1};
+    vector<int> vector2 = {0, 1, 1};
+
+    Box box1(vector1, 10);
+    Box box2(vector2, 10);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    State state(2, box_list);
+
+    vector<int> state_history;
+    vector<State> new_states = state.GenerateNextStates(state_history);
+
+    vector<int> res = {1, 1, 1};
+
+    ASSERT_EQ(new_states.size(), 5);
+    ASSERT_EQ(new_states[0].GetBoxes()[1].GetBlocks(), res);
+}
+
+TEST(StateFixture, generate_states_size_cap_test)
+{
+
+    vector<int> vector1 = {0, 0, 0};
+    vector<int> vector2 = {0, 0, 0};
+
+    Box box1(vector1, 3);
+    Box box2(vector2, 2);
+
+    box1.AddBlock(0);
+    box1.AddBlock(0);
+
+    box2.AddBlock(1);
+    box2.AddBlock(2);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    State state(2, box_list);
+
+    vector<int> state_history;
+    vector<State> new_states = state.GenerateNextStates(state_history);
+
+    vector<int> res = {2, 0, 1};
+
+    ASSERT_EQ(new_states.size(), 2);
+    ASSERT_EQ(new_states[1].GetBoxes()[0].GetBlocks(), res);
+}
