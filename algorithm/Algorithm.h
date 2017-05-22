@@ -1,11 +1,14 @@
 #ifndef ALL_BLOCKS_SORTING_ALGORITHM_H
 #define ALL_BLOCKS_SORTING_ALGORITHM_H
 
+#include "State.h"
 
 class Algorithm
 {
+    int number_of_colors;
 public:
-    static int number_of_colors;
+    static State BruteForce(State& initial_state);
+    static State Heuristic(State& initial_state);
 };
 
 
