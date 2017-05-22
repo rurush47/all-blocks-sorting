@@ -9,6 +9,8 @@ class Algorithm
 public:
     static State BruteForce(State& initial_state);
     static State Heuristic(State& initial_state);
+    static int BlocksQuantityScore(State& state);
+    static int BlockDensityScore(State& state);
 };
 
 
