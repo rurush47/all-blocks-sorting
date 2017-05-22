@@ -41,3 +41,28 @@ int Algorithm::BlocksQuantityScore(State &state)
     }
     return score;
 }
+
+int Algorithm::BlockDensityScore(State &state)
+{
+    int score = 0;
+
+    vector<Box> boxes = state.GetBoxes();
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        Box current_box = boxes[i];
+        vector<int>current_blocks = boxes[i].GetBlocks();
+        if(current_box.GetNumberOfBlocks() == current_box.GetCapacity())
+        {
+            score++;
+        }
+        for (int j = 0; j < current_blocks.size(); ++j)
+        {
+            int ctr_quantity = current_blocks[j];
+            if(ctr_quantity > 1)
+            {
+                score += ctr_quantity - 1;
+            }
+        }
+    }
+    return score;
+}

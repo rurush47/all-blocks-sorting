@@ -16,6 +16,7 @@ public:
     Box(vector<int> &blocks, int capacity);
     vector<int> GetBlocks();
     int GetCapacity();
+    int GetNumberOfBlocks();
     bool AddBlock(int color);
     bool RemoveBlock(int color);
 };

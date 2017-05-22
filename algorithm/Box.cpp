@@ -11,6 +11,8 @@ vector<int> Box::GetBlocks() { return blocks; }
 
 int Box::GetCapacity() { return capacity; }
 
+int Box::GetNumberOfBlocks() { return number_of_blocks; }
+
 bool Box::AddBlock(int color)
 {
     try
