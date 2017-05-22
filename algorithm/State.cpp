@@ -93,3 +93,20 @@ vector<State> State::GenerateNextStates(vector<int> &state_history)
     }
     return new_states;
 }
+
+bool State::IsFinal(State& state)
+{
+    vector<Box> boxes = state.GetBoxes();
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        vector<int> blocks = boxes[i].GetBlocks();
+        for (int j = 0; j < blocks.size(); ++j)
+        {
+            if(blocks[j] > 1)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}

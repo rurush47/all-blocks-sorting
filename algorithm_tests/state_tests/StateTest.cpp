@@ -191,3 +191,32 @@ TEST(StateFixture, generate_states_size_cap_test)
     ASSERT_EQ(new_states.size(), 2);
     ASSERT_EQ(new_states[1].GetBoxes()[0].GetBlocks(), res);
 }
+
+TEST(StateFixture, is_final_test)
+{
+    vector<int> vector1 = {1, 0, 1};
+    vector<int> vector2 = {1, 1, 1};
+
+    vector<int> vector3 = {1, 2, 1};
+    vector<int> vector4 = {1, 1, 1};
+
+    Box box1(vector1, 3);
+    Box box2(vector2, 2);
+
+    Box box3(vector3, 3);
+    Box box4(vector4, 3);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    vector<Box> box_list2;
+    box_list2.push_back(box3);
+    box_list2.push_back(box4);
+
+    State state(2, box_list);
+    State state2(2, box_list2);
+
+    ASSERT_EQ(State::IsFinal(state), true);
+    ASSERT_EQ(State::IsFinal(state2), false);
+}
