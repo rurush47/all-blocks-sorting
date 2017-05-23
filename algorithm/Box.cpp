@@ -1,6 +1,6 @@
 #include "Box.h"
 
-Box::Box(vector<int> &blocks, int capacity)
+Box::Box(vector<int> blocks, int capacity)
 {
     Box::blocks = blocks;
     Box::capacity = capacity;

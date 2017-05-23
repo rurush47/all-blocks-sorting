@@ -13,7 +13,7 @@ class Box
     int capacity;
     int number_of_blocks;
 public:
-    Box(vector<int> &blocks, int capacity);
+    Box(vector<int> blocks, int capacity);
     vector<int> GetBlocks();
     int GetCapacity();
     int GetNumberOfBlocks();
