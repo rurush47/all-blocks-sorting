@@ -8,6 +8,7 @@ using namespace std;
 
 class State
 {
+    int score = -1;
     int number_of_boxes;
     vector<Box> boxes;
 
@@ -22,6 +23,8 @@ public:
     pair<bool, State> MoveLeft(int box_index, int color_index, State state);
     pair<bool, State> MoveRight(int box_index, int color_index, State state);
     static bool IsFinal(State& state);
+    int GetScore();
+    void SetScore(int new_score);
 };
 
 

@@ -110,3 +110,7 @@ bool State::IsFinal(State& state)
     }
     return true;
 }
+
+void State::SetScore(int new_score) { State::score = new_score; }
+
+int State::GetScore() { return score; }

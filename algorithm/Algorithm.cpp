@@ -22,6 +22,89 @@ State Algorithm::BruteForce(State &initial_state)
     return current_state;
 }
 
+State Algorithm::Heuristic(State &initial_state, int to_develop, Mode mode)
+{
+    vector<State> states;
+    states.push_back(initial_state);
+
+    vector<int> state_history;
+
+    vector<int>indexes_to_develop;
+    indexes_to_develop.push_back(0);
+
+    while (true)
+    {
+        //develop states
+        vector<State> to_add_states;
+        for (int i = 0; i < indexes_to_develop.size(); ++i)
+        {
+            int crt_index = indexes_to_develop[i];
+            State* current = &states[crt_index];
+
+            //if is final return it
+            if(State::IsFinal(*current))
+            {
+                return *current;
+            }
+
+            vector<State> new_states = current->GenerateNextStates(state_history);
+            //erase state
+            states.erase(states.begin() + crt_index);
+            to_add_states.insert(to_add_states.end(), new_states.begin(), new_states.end());
+        }
+
+        states.insert(states.end(), to_add_states.begin(), to_add_states.end());
+
+        //choose new states to develop
+        vector<int> scores;
+        indexes_to_develop.clear();
+        //get all scores
+        for (int j = 0; j < states.size(); ++j)
+        {
+            State* crt_state = &states[j];
+            int state_score = crt_state->GetScore();
+            if(state_score < 0)
+            {
+                if(mode == quantity)
+                {
+                    state_score = BlocksQuantityScore(*crt_state);
+                    crt_state->SetScore(state_score);
+                }
+                else
+                {
+                    state_score = BlockDensityScore(*crt_state);
+                    crt_state->SetScore(state_score);
+                }
+            }
+            scores.push_back(state_score);
+        }
+
+        indexes_to_develop = GetMinimalIndices(to_develop, scores);
+        int xd = 0;
+    }
+}
+
+vector<int> Algorithm::GetMinimalIndices(int quantity, vector<int> &scores)
+{
+    vector<int> indices;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > q;
+    for (int i = 0; i < scores.size(); ++i) {
+        q.push(std::pair<int, int>(scores[i], i));
+    }
+    if(scores.size() < quantity)
+    {
+        quantity = scores.size();
+    }
+    for (int i = 0; i < quantity; ++i) {
+        int ki = q.top().second;
+        indices.push_back(ki);
+        q.pop();
+    }
+    sort(indices.begin(), indices.end(), greater<int>());
+    return indices;
+}
+
 int Algorithm::BlocksQuantityScore(State &state)
 {
     int score = 0;
