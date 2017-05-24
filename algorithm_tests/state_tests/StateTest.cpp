@@ -77,10 +77,10 @@ TEST(StateFixture, generate_hash_test)
 
     state.GenerateHash();
 
-    int hash1 = state.GenerateHash();
-    int hash2 = state2.GenerateHash();
-    int hash3 = state3.GenerateHash();
-    int hash4 = state4.GenerateHash();
+    string hash1 = state.GenerateHash();
+    string hash2 = state2.GenerateHash();
+    string hash3 = state3.GenerateHash();
+    string hash4 = state4.GenerateHash();
 
     ASSERT_EQ(hash1, hash2);
     ASSERT_NE(hash1, hash3);
@@ -89,13 +89,13 @@ TEST(StateFixture, generate_hash_test)
 
 TEST(StateFixture, contains_test)
 {
-    vector<int> v;
-    v.push_back(12);
-    v.push_back(45);
-    v.push_back(19);
+    vector<string> v;
+    v.push_back("12");
+    v.push_back("45");
+    v.push_back("19");
 
-    bool result1 = State::Contains(v, 12);
-    bool result2 = State::Contains(v, 23);
+    bool result1 = State::Contains(v, "12");
+    bool result2 = State::Contains(v, "23");
 
     ASSERT_EQ(result1, true);
     ASSERT_EQ(result2, false);
@@ -153,7 +153,7 @@ TEST(StateFixture, generate_states_test)
 
     State state(2, box_list);
 
-    vector<int> state_history;
+    vector<string> state_history;
     vector<State> new_states = state.GenerateNextStates(state_history);
 
     vector<int> res = {1, 1, 1};
@@ -183,7 +183,7 @@ TEST(StateFixture, generate_states_size_cap_test)
 
     State state(2, box_list);
 
-    vector<int> state_history;
+    vector<string> state_history;
     vector<State> new_states = state.GenerateNextStates(state_history);
 
     vector<int> res = {2, 0, 1};
@@ -219,4 +219,22 @@ TEST(StateFixture, is_final_test)
 
     ASSERT_EQ(State::IsFinal(state), true);
     ASSERT_EQ(State::IsFinal(state2), false);
+}
+
+TEST(StateFixture, generate_hash_string_test) {
+    vector<int> vector1 = {0, 2, 0};
+    vector<int> vector2 = {1, 0, 0};
+
+    Box box1(vector1, 3);
+    Box box2(vector2, 3);
+
+    vector<Box> box_list;
+    box_list.push_back(box1);
+    box_list.push_back(box2);
+
+    State state(2, box_list);
+
+    string hash_string = state.GetHashString();
+
+    ASSERT_EQ(hash_string, "020|100|");
 }

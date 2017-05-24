@@ -12,20 +12,9 @@ vector<Box> State::GetBoxes() { return boxes; }
 
 int State::GetNumberOfBoxes() { return number_of_boxes; }
 
-int State::GenerateHash()
+string State::GenerateHash()
 {
-    int result = 0;
-        int shift = 0;
-        for (int i = 0; i < boxes.size(); ++i)
-        {
-        vector<int> crt_box_array = boxes[i].GetBlocks();
-        for (int j = 0; j < crt_box_array.size(); j++)
-        {
-            shift = (shift + 11) % 21;
-            result ^= (crt_box_array[j] + 1024) << shift;
-        }
-    }
-    return result;
+    return GetHashString();
 }
 
 pair<bool, State> State::MoveLeft(int box_index, int color_index, State new_state)
@@ -52,7 +41,7 @@ pair<bool, State> State::MoveRight(int box_index, int color_index, State new_sta
     return pair<bool, State>(false, State());
 }
 
-bool State::Contains(vector<int> hash_history, int hash)
+bool State::Contains(vector<string> hash_history, string hash)
 {
     for(int i = 0; i < hash_history.size(); i++)
     {
@@ -64,7 +53,7 @@ bool State::Contains(vector<int> hash_history, int hash)
     return false;
 }
 
-vector<State> State::GenerateNextStates(vector<int> &state_history)
+vector<State> State::GenerateNextStates(vector<string> &state_history)
 {
     vector<State> new_states;
     for (int i = 0; i < number_of_boxes; ++i)
@@ -80,7 +69,7 @@ vector<State> State::GenerateNextStates(vector<int> &state_history)
                     if(move_results[i].first)
                     {
                         State new_state = move_results[i].second;
-                        int hash = new_state.GenerateHash();
+                        string hash = new_state.GenerateHash();
                         if(!Contains(state_history, hash))
                         {
                             state_history.push_back(hash);
@@ -114,3 +103,19 @@ bool State::IsFinal(State& state)
 void State::SetScore(int new_score) { State::score = new_score; }
 
 int State::GetScore() { return score; }
+
+const string State::GetHashString()
+{
+    string result_string = "";
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        vector<int> crt_box_array = boxes[i].GetBlocks();
+        for (int j = 0; j < crt_box_array.size(); j++)
+        {
+            result_string += to_string(crt_box_array[j]);
+        }
+        result_string += "|";
+    }
+    return result_string;
+}
+

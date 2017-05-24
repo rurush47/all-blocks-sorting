@@ -10,10 +10,10 @@ class GeneratorFixture : public ::testing::Test
 
 TEST(GeneratorFixture, genetare_state_test)
 {
-    State state = Generator::GenerateState(5, 5, 5, 5);
+    State state = Generator::GenerateState(5, 4, 5, 6);
     State org = state;
 
-    State sorted = Algorithm::Heuristic(state, 1, Algorithm::quantity);
+    State sorted = Algorithm::BruteForce(state);
 
     int i = 0;
 }

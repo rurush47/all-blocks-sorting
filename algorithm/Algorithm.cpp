@@ -5,12 +5,12 @@ State Algorithm::BruteForce(State &initial_state)
     vector<State> unchecked_states;
     unchecked_states.push_back(initial_state);
 
-    vector<int> state_history;
+    vector<string> state_history;
 
     State current_state = initial_state;
     while(!State::IsFinal(current_state))
     {
-        int state_hash = current_state.GenerateHash();
+        string state_hash = current_state.GenerateHash();
         state_history.push_back(state_hash);
 
         vector<State> new_states = current_state.GenerateNextStates(state_history);
@@ -27,7 +27,7 @@ State Algorithm::Heuristic(State &initial_state, int to_develop, Mode mode)
     vector<State> states;
     states.push_back(initial_state);
 
-    vector<int> state_history;
+    vector<string> state_history;
 
     vector<int>indexes_to_develop;
     indexes_to_develop.push_back(0);
