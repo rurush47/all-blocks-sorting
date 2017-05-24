@@ -2,21 +2,21 @@
 
 State Generator::GenerateState(int number_of_colors, int avg_density, int avg_capacity ,int number_of_boxes)
 {
+    srand (time(NULL));
     if(number_of_boxes < number_of_colors)
     {
         throw "Bad numbers!";
     }
 
-    vector<int> zero_vector(number_of_colors, 0);
+    vector<int> zero_vector((unsigned)number_of_colors, 0);
     vector<Box> boxes;
-    vector<int> color_quantity(number_of_colors, 0);
+    vector<int> color_quantity((unsigned)number_of_colors, 0);
 
     int color_sum = 0;
     int cap_sum = 0;
 
-    srand (time(NULL));
     default_random_engine generator;
-    normal_distribution<INT32_C()> distribution((float)avg_density, 2.0);
+    normal_distribution<INT32_C()> distribution((float)avg_density, 1.0);
     normal_distribution<INT32_C()> distribution_boxes((float)avg_capacity, 1.0);
 
     //generate blocks
@@ -55,7 +55,7 @@ State Generator::GenerateState(int number_of_colors, int avg_density, int avg_ca
         for (int i = 0; i < crt_color; ++i)
         {
             int number = rand() % number_of_boxes;
-            if(!boxes[number].AddBlock(i))
+            if(!boxes[number].AddBlock(j))
             {
                 i--;
             }
