@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 #include "Box.h"
 using namespace std;
 
@@ -15,7 +16,8 @@ class State
 public:
     State();
     State(int number_of_boxes, vector<Box>& boxes);
-    int GenerateHash();
+    size_t GenerateHash();
+    const string GetHashString();
     vector<State> GenerateNextStates(vector<int>& state_history);
     vector<Box> GetBoxes();
     int GetNumberOfBoxes();

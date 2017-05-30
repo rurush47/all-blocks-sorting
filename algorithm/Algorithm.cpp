@@ -1,6 +1,6 @@
 #include "Algorithm.h"
 
-State Algorithm::BruteForce(State &initial_state)
+State Algorithm::BruteForce(State initial_state)
 {
     vector<State> unchecked_states;
     unchecked_states.push_back(initial_state);
@@ -22,7 +22,7 @@ State Algorithm::BruteForce(State &initial_state)
     return current_state;
 }
 
-State Algorithm::Heuristic(State &initial_state, int to_develop, Mode mode)
+State Algorithm::Heuristic(State initial_state, int to_develop, Mode mode)
 {
     vector<State> states;
     states.push_back(initial_state);
@@ -62,25 +62,21 @@ State Algorithm::Heuristic(State &initial_state, int to_develop, Mode mode)
         for (int j = 0; j < states.size(); ++j)
         {
             State* crt_state = &states[j];
-            int state_score = crt_state->GetScore();
-            if(state_score < 0)
+            int state_score;
+            if(mode == quantity)
             {
-                if(mode == quantity)
-                {
-                    state_score = BlocksQuantityScore(*crt_state);
-                    crt_state->SetScore(state_score);
-                }
-                else
-                {
-                    state_score = BlockDensityScore(*crt_state);
-                    crt_state->SetScore(state_score);
-                }
+                state_score = BlocksQuantityScore(*crt_state);
+                crt_state->SetScore(state_score);
+            }
+            else
+            {
+                state_score = BlockDensityScore(*crt_state);
+                crt_state->SetScore(state_score);
             }
             scores.push_back(state_score);
         }
 
         indexes_to_develop = GetMinimalIndices(to_develop, scores);
-        int xd = 0;
     }
 }
 

@@ -12,20 +12,9 @@ vector<Box> State::GetBoxes() { return boxes; }
 
 int State::GetNumberOfBoxes() { return number_of_boxes; }
 
-int State::GenerateHash()
+size_t State::GenerateHash()
 {
-    int result = 0;
-        int shift = 0;
-        for (int i = 0; i < boxes.size(); ++i)
-        {
-        vector<int> crt_box_array = boxes[i].GetBlocks();
-        for (int j = 0; j < crt_box_array.size(); j++)
-        {
-            shift = (shift + 11) % 21;
-            result ^= (crt_box_array[j] + 1024) << shift;
-        }
-    }
-    return result;
+    return hash<string>{}(GetHashString());
 }
 
 pair<bool, State> State::MoveLeft(int box_index, int color_index, State new_state)
@@ -114,3 +103,19 @@ bool State::IsFinal(State& state)
 void State::SetScore(int new_score) { State::score = new_score; }
 
 int State::GetScore() { return score; }
+
+const string State::GetHashString()
+{
+    string result_string = "";
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        vector<int> crt_box_array = boxes[i].GetBlocks();
+        for (int j = 0; j < crt_box_array.size(); j++)
+        {
+            result_string += to_string(crt_box_array[j]);
+        }
+        result_string += "|";
+    }
+    return result_string;
+}
+

@@ -1,13 +1,8 @@
 #include "Generator.h"
 
-State Generator::GenerateState(int number_of_colors, int avg_density, int avg_capacity ,int number_of_boxes)
+State Generator::GenerateState(int number_of_colors, float avg_density, int avg_capacity ,int number_of_boxes)
 {
     srand (time(NULL));
-    if(number_of_boxes < number_of_colors)
-    {
-        throw "Bad numbers!";
-    }
-
     vector<int> zero_vector((unsigned)number_of_colors, 0);
     vector<Box> boxes;
     vector<int> color_quantity((unsigned)number_of_colors, 0);
@@ -16,7 +11,7 @@ State Generator::GenerateState(int number_of_colors, int avg_density, int avg_ca
     int cap_sum = 0;
 
     default_random_engine generator;
-    normal_distribution<INT32_C()> distribution((float)avg_density, 1.0);
+    normal_distribution<INT32_C()> distribution((float)avg_density*((avg_capacity*number_of_boxes)/number_of_colors), 1.0);
     normal_distribution<INT32_C()> distribution_boxes((float)avg_capacity, 1.0);
 
     //generate blocks
@@ -28,9 +23,15 @@ State Generator::GenerateState(int number_of_colors, int avg_density, int avg_ca
             color_quantity.at(i) += number;
             color_sum += number;
         }
+        else if(number > number_of_boxes)
+        {
+            color_quantity.at(i) += number_of_boxes;
+            color_sum += number_of_boxes;
+        }
         else
         {
-            i--;
+            color_quantity.at(i) += 1;
+            color_sum += 1;
         }
     }
 
@@ -63,5 +64,73 @@ State Generator::GenerateState(int number_of_colors, int avg_density, int avg_ca
     }
 
     //create state
-    return State(number_of_boxes, boxes);
+    State new_state(number_of_boxes, boxes);
+    PrintState(new_state);
+    return new_state;
+}
+
+State Generator::ReadFromFile(string path)
+{
+    string STRING;
+    ifstream infile;
+    infile.open (path);
+
+    char n;
+    infile >> n;
+    int number_of_colors = n - '0';
+
+    infile >> n;
+    int number_of_boxes = n - '0';
+
+    vector<int> zero_vec((unsigned)number_of_colors, 0);
+    vector<Box> boxes;
+
+    for (int i = 0; i < number_of_boxes; ++i)
+    {
+        infile >> n;
+        int cap = n - '0';
+        Box new_box(zero_vec, cap);
+        for (int j = 0; j < number_of_colors; ++j)
+        {
+            infile >> n;
+            int quantity = n - '0';
+            for (int k = 0; k < quantity; ++k)
+            {
+                new_box.AddBlock(j);
+            }
+        }
+        boxes.push_back(new_box);
+    }
+
+    State new_state(number_of_boxes, boxes);
+    infile.close();
+    return new_state;
+}
+
+void Generator::PrintState(State state)
+{
+    vector<Box> boxes = state.GetBoxes();
+    int cap = 0;
+    int color_count = 0;
+
+    cout << endl;
+    for (int i = 0; i < boxes.size(); ++i)
+    {
+        vector<int> blocks = boxes[i].GetBlocks();
+        for (int j = 0; j < blocks.size(); ++j)
+        {
+            color_count += blocks[j];
+            cout << blocks[j];
+        }
+        cout << " cap ";
+        cap += boxes[i].GetCapacity();
+        cout << boxes[i].GetCapacity();
+        cout << endl;
+    }
+    cout << "total cap : ";
+    cout << cap;
+    cout << endl;
+    cout << "total colors : ";
+    cout << color_count;
+    cout << endl;
 }
