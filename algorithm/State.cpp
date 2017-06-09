@@ -25,6 +25,7 @@ pair<bool, State> State::MoveLeft(int box_index, int color_index, State new_stat
     if(new_state.boxes[box_index].RemoveBlock(color_index) &&
             new_state.boxes[next_box_index].AddBlock(color_index))
     {
+        new_state.AddNumberOfMoves(1);
         return pair<bool, State>(true, new_state);
     }
     return pair<bool, State>(false, State());
@@ -37,6 +38,7 @@ pair<bool, State> State::MoveRight(int box_index, int color_index, State new_sta
     if(new_state.boxes[box_index].RemoveBlock(color_index) &&
        new_state.boxes[next_box_index].AddBlock(color_index))
     {
+        new_state.AddNumberOfMoves(1);
         return pair<bool, State>(true, new_state);
     }
     return pair<bool, State>(false, State());
@@ -118,5 +120,15 @@ const string State::GetHashString()
         result_string += "|";
     }
     return result_string;
+}
+
+void State::AddNumberOfMoves(int number)
+{
+    moves_counter += number;
+}
+
+int State::GetNumberOfMoves()
+{
+    return moves_counter;
 }
 

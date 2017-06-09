@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     State state;
-    int n = 120;
+    int n = 8;
     int number_of_colors = n;
     float density = 0.5;
     int cap = n;
@@ -23,11 +23,9 @@ int main()
     {
         state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
 
-        auto begin = std::chrono::high_resolution_clock::now();
-        Algorithm::Iterative(state);
-        auto end = std::chrono::high_resolution_clock::now();
+        State final_state = Algorithm::Heuristic(state, 1, Algorithm::quantity);
 
-        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << std::endl;
+        std::cout << final_state.GetNumberOfMoves() << std::endl;
     }
 
     cout << "heuristic quantity 1" << endl;

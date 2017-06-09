@@ -11,6 +11,7 @@ class State
 {
     int score = -1;
     int number_of_boxes;
+    int moves_counter = 0;
     vector<Box> boxes;
 
 public:
@@ -28,6 +29,8 @@ public:
     static bool IsFinal(State& state);
     int GetScore();
     void SetScore(int new_score);
+    void AddNumberOfMoves(int number);
+    int GetNumberOfMoves();
 };
 
 

@@ -1,4 +1,5 @@
 #include "Algorithm.h"
+#include <cmath>
 
 State Algorithm::BruteForce(State initial_state)
 {
@@ -115,6 +116,7 @@ void Algorithm::MoveToClosestFree(State *state, int box_index, int color_index)
             {
                 state->GetBoxesRef()->at(box_index).RemoveBlock(color_index);
                 state->GetBoxesRef()->at(i).AddBlock(color_index);
+                state->AddNumberOfMoves(std::abs(box_index - i));
                 return;
             }
         }
