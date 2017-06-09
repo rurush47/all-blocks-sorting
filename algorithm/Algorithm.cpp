@@ -80,6 +80,49 @@ State Algorithm::Heuristic(State initial_state, int to_develop, Mode mode)
     }
 }
 
+State Algorithm::Iterative(State initial_state)
+{
+    State state = initial_state;
+    vector<Box> boxes = state.GetBoxes();
+
+    while(!State::IsFinal(state))
+    {
+        for (int i = 0; i < boxes.size(); i++)
+        {
+            vector<int> current_blocks = boxes[i].GetBlocks();
+            for (int j = 0; j < current_blocks.size(); ++j)
+            {
+                int current_value = current_blocks[j];
+                if(current_value > 1)
+                {
+                    MoveToClosestFree(&state, i, j);
+                }
+            }
+        }
+    }
+
+    return state;
+}
+
+void Algorithm::MoveToClosestFree(State *state, int box_index, int color_index)
+{
+    for (int i = 0; i < state->GetNumberOfBoxes(); ++i)
+    {
+        if(i != box_index)
+        {
+            Box new_box = state->GetBoxes()[i];
+            if(!new_box.IsFull() && new_box.GetBlocks()[color_index] < 1)
+            {
+                state->GetBoxesRef()->at(box_index).RemoveBlock(color_index);
+                state->GetBoxesRef()->at(i).AddBlock(color_index);
+                return;
+            }
+        }
+    }
+}
+
+
+
 vector<int> Algorithm::GetMinimalIndices(int quantity, vector<int> &scores)
 {
     vector<int> indices;

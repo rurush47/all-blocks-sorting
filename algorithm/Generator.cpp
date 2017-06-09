@@ -65,7 +65,72 @@ State Generator::GenerateState(int number_of_colors, float avg_density, int avg_
 
     //create state
     State new_state(number_of_boxes, boxes);
-    PrintState(new_state);
+    //PrintState(new_state);
+    return new_state;
+}
+
+State Generator::GenerateStateDet(int number_of_colors, float density, int capacity, int number_of_boxes)
+{
+    srand (time(NULL));
+    vector<int> zero_vector((unsigned)number_of_colors, 0);
+    vector<Box> boxes;
+    vector<int> color_quantity((unsigned)number_of_colors, 0);
+
+    int color_sum = 0;
+    int cap_sum = 0;
+
+    //generate blocks
+    for (int i = 0; i < number_of_colors; ++i)
+    {
+        int number = (int)round(density*capacity);
+        if(number > 0 && number <= number_of_boxes)
+        {
+            color_quantity.at(i) += number;
+            color_sum += number;
+        }
+        else if(number > number_of_boxes)
+        {
+            color_quantity.at(i) += number_of_boxes;
+            color_sum += number_of_boxes;
+        }
+        else
+        {
+            color_quantity.at(i) += 1;
+            color_sum += 1;
+        }
+    }
+
+    //generate boxes
+    for (int i = 0; i < number_of_boxes; ++i)
+    {
+        int cap = capacity;
+        Box new_box(zero_vector, cap);
+        boxes.push_back(new_box);
+        cap_sum += cap;
+    }
+
+    if(cap_sum < color_sum)
+    {
+        throw "Bad numbers!";
+    }
+
+    //distribute colors
+    for (int j = 0; j < number_of_colors; ++j)
+    {
+        int crt_color = color_quantity[j];
+        for (int i = 0; i < crt_color; ++i)
+        {
+            int number = rand() % number_of_boxes;
+            if(!boxes[number].AddBlock(j))
+            {
+                i--;
+            }
+        }
+    }
+
+    //create state
+    State new_state(number_of_boxes, boxes);
+    //PrintState(new_state);
     return new_state;
 }
 

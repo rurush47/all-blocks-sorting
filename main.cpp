@@ -2,29 +2,67 @@
 #include <chrono>
 #include <Generator.h>
 #include "Algorithm.h"
+using namespace std;
 
 int main()
 {
-    State state = Generator::GenerateState(30, 0.7, 10, 40);
+    State state;
+    int n = 120;
+    int number_of_colors = n;
+    float density = 0.5;
+    int cap = n;
+    int number_of_boxes = n;
+    int number_of_tests = 100;
 
-    auto begin = std::chrono::high_resolution_clock::now();
-    Algorithm::Heuristic(state, 1, Algorithm::quantity);
-    auto end = std::chrono::high_resolution_clock::now();
+    State ex_state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
+    Generator::PrintState(ex_state);
 
-    std::cout << endl;
-    std::cout << std::chrono::duration_cast<std::chrono::seconds>(end-begin).count() << "ns" << std::endl;
+    cout << "iterative" << endl;
 
-    begin = std::chrono::high_resolution_clock::now();
-    Algorithm::Heuristic(state, 2, Algorithm::quantity);
-    end = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < number_of_tests; ++i)
+    {
+        state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
 
-    std::cout << endl;
-    std::cout << std::chrono::duration_cast<std::chrono::seconds>(end-begin).count() << "ns" << std::endl;
+        auto begin = std::chrono::high_resolution_clock::now();
+        Algorithm::Iterative(state);
+        auto end = std::chrono::high_resolution_clock::now();
 
-    begin = std::chrono::high_resolution_clock::now();
-    Algorithm::Heuristic(state, 1, Algorithm::density);
-    end = std::chrono::high_resolution_clock::now();
+        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << std::endl;
+    }
 
-    std::cout << endl;
-    std::cout << std::chrono::duration_cast<std::chrono::seconds>(end-begin).count() << "ns" << std::endl;
+    cout << "heuristic quantity 1" << endl;
+
+//    for (int i = 0; i < number_of_tests; ++i) {
+//        state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
+//
+//        auto begin = std::chrono::high_resolution_clock::now();
+//        Algorithm::Heuristic(state, 1, Algorithm::quantity);
+//        auto end = std::chrono::high_resolution_clock::now();
+//
+//        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << std::endl;
+//    }
+//
+//    cout << "heuristic density 1" << endl;
+//
+//    for (int i = 0; i < number_of_tests; ++i) {
+//        state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
+//
+//        auto begin = std::chrono::high_resolution_clock::now();
+//        Algorithm::Heuristic(state, 1, Algorithm::density);
+//        auto end = std::chrono::high_resolution_clock::now();
+//
+//        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << std::endl;
+//    }
+
+//    cout << "brute force" << endl;
+//
+//    for (int i = 0; i < number_of_tests; ++i) {
+//        state = Generator::GenerateStateDet(number_of_colors, density, cap, number_of_boxes);
+//
+//        auto begin = std::chrono::high_resolution_clock::now();
+//        Algorithm::BruteForce(state);
+//        auto end = std::chrono::high_resolution_clock::now();
+//
+//        std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << std::endl;
+//    }
 }

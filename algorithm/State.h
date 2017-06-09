@@ -20,6 +20,7 @@ public:
     const string GetHashString();
     vector<State> GenerateNextStates(vector<int>& state_history);
     vector<Box> GetBoxes();
+    vector<Box> * GetBoxesRef();
     int GetNumberOfBoxes();
     static bool Contains(vector<int> hash_history, int hash);
     pair<bool, State> MoveLeft(int box_index, int color_index, State state);

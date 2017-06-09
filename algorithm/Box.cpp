@@ -48,3 +48,8 @@ bool Box::RemoveBlock(int color)
     }
     return false;
 }
+
+bool Box::IsFull()
+{
+    return number_of_blocks >= capacity;
+}

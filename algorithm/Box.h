@@ -19,6 +19,7 @@ public:
     int GetNumberOfBlocks();
     bool AddBlock(int color);
     bool RemoveBlock(int color);
+    bool IsFull();
 };
 
 

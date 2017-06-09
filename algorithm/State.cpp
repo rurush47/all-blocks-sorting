@@ -9,6 +9,7 @@ State::State(int number_of_boxes, vector<Box>& boxes)
 }
 
 vector<Box> State::GetBoxes() { return boxes; }
+vector<Box> * State::GetBoxesRef() { return &boxes; }
 
 int State::GetNumberOfBoxes() { return number_of_boxes; }
 
